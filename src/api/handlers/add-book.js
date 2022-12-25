@@ -1,7 +1,7 @@
-const { nanoid } = require('nanoid');
-const books = require('../book.js');
+const {nanoid} = require('nanoid');
+const books = require('../../books.js');
 
-const addBookHandler = (request, h) => {
+const insertBookHandler = (request, h) => {
     const payload = request.payload;
 
     const id = nanoid(15);
@@ -9,7 +9,7 @@ const addBookHandler = (request, h) => {
     const insertedAt = new Date().toISOString();
     const updatedAt = insertedAt;
 
-    const newBook = { id, finished, insertedAt, updatedAt, ...payload };
+    const newBook = {id, finished, insertedAt, updatedAt, ...payload};
     books.unshift(newBook);
 
     const isSuccess = books.filter((book) => book.id === id).length > 0;
@@ -45,7 +45,7 @@ const addBookHandler = (request, h) => {
         });
     }
 
-    function response({ status = 'error', data = undefined, statusCode = 500, message }) {
+    function response({status = 'error', statusCode = 500, message, data}) {
         const source = {
             status,
             message,
@@ -59,4 +59,4 @@ const addBookHandler = (request, h) => {
     }
 };
 
-module.exports = addBookHandler;
+module.exports = insertBookHandler;
