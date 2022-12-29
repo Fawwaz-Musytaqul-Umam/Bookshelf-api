@@ -41,13 +41,83 @@ class Handler {
                     bookId: id,
                 },
             });
-        } else {
-            return response(h, {message: 'Buku gagal ditambahkan'});
         }
+
+        return response(h, {message: 'Buku gagal ditambahkan'});
     }
 
     // Get ALl Books
-    static getAllBook() {
+    static getAllBooks(request, h) {
+        const {name, reading, finished} = request.query;
+
+        if (name) {
+            const data = [];
+
+            for (const book of books) {
+                if (book.name.toLowerCase().includes(name.toLowerCase())) {
+                    data.unshift(book);
+                }
+            }
+
+            if (data.length > 0) {
+                return {status: 'success', data: {books: data}};
+            }
+
+            return response(h, {
+                status: 'fail',
+                statusCode: 404,
+                message: 'Buku tidak ditemukan',
+            });
+        }
+
+        if (reading) {
+            const data = [];
+            let _reading = null;
+
+            if (reading == 1) _reading = true;
+            else _reading = false;
+
+            for (const book of books) {
+                if (book.reading === _reading) {
+                    data.unshift(book);
+                }
+            }
+
+            if (data.length > 0) {
+                return {status: 'success', data: {books: data}};
+            }
+
+            return response(h, {
+                status: 'fail',
+                statusCode: 404,
+                message: 'Buku tidak ditemukan',
+            });
+        }
+
+        if (finished) {
+            const data = [];
+            let _finished = null;
+
+            if (finished == 1) _finished = true;
+            else _finished = false;
+
+            for (const book of books) {
+                if (book.finished === _finished) {
+                    data.unshift(book);
+                }
+            }
+
+            if (data.length > 0) {
+                return {status: 'success', data: {books: data}};
+            }
+
+            return response(h, {
+                status: 'fail',
+                statusCode: 404,
+                message: 'Buku tidak ditemukan',
+            });
+        }
+
         return {status: 'success', data: {books}};
     }
 
@@ -82,14 +152,6 @@ class Handler {
         const finished = readPage === pageCount;
 
         const index = books.findIndex((book) => book.id == bookId);
-
-        if (index === -1) {
-            return response(h, {
-                status: 'fail',
-                statusCode: 404,
-                message: 'Gagal memperbarui buku. Id tidak ditemukan',
-            });
-        }
 
         if (!name) {
             return response(h, {
@@ -127,9 +189,35 @@ class Handler {
                 statusCode: 200,
                 message: 'Buku berhasil diperbarui',
             });
-        } else {
-            return response(h, {message: 'gagal memperbarui buku'});
         }
+
+        return response(h, {
+            status: 'fail',
+            statusCode: 404,
+            message: 'Gagal memperbarui buku. Id tidak ditemukan',
+        });
+    }
+
+    // Delete Book
+    static deleteBook(requset, h) {
+        const {bookId} = requset.params;
+
+        const index = books.findIndex((book) => book.id == bookId);
+
+        if (index !== -1) {
+            books.splice(index, 1);
+            return response(h, {
+                status: 'success',
+                statusCode: 200,
+                message: 'Buku berhasil dihapus',
+            });
+        }
+
+        return response(h, {
+            status: 'fail',
+            statusCode: 404,
+            message: 'Buku gagal dihapus. Id tidak ditemukan',
+        });
     }
 };
 

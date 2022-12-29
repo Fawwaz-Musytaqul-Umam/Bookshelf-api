@@ -9,7 +9,7 @@ const routes = [
     {
         method: 'GET',
         path: '/books',
-        handler: Handler.getAllBook,
+        handler: Handler.getAllBooks,
     },
     {
         method: 'GET',
@@ -20,6 +20,11 @@ const routes = [
         method: 'PUT',
         path: '/books/{bookId}',
         handler: Handler.updateBook,
+    },
+    {
+        method: 'Delete',
+        path: '/books/{bookId}',
+        handler: Handler.deleteBook,
     },
 ];
 
