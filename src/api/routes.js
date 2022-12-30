@@ -22,7 +22,7 @@ const routes = [
         handler: Handler.updateBook,
     },
     {
-        method: 'Delete',
+        method: 'DELETE',
         path: '/books/{bookId}',
         handler: Handler.deleteBook,
     },
