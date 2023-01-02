@@ -50,12 +50,16 @@ class Handler {
     static getAllBooks(request, h) {
         const {name, reading, finished} = request.query;
 
-        if (name) {
-            const data = [];
+        const data = [];
 
+        if (name) {
             for (const book of books) {
                 if (book.name.toLowerCase().includes(name.toLowerCase())) {
-                    data.unshift(book);
+                    data.unshift({
+                        id: book.id,
+                        name: book.name,
+                        publisher: book.publisher,
+                    });
                 }
             }
 
@@ -71,15 +75,16 @@ class Handler {
         }
 
         if (reading) {
-            const data = [];
-            let _reading = null;
-
-            if (reading == 1) _reading = true;
-            else _reading = false;
+            let isReading = false;
+            if (reading == 1) isReading = true;
 
             for (const book of books) {
-                if (book.reading === _reading) {
-                    data.unshift(book);
+                if (book.reading === isReading) {
+                    data.unshift({
+                        id: book.id,
+                        name: book.name,
+                        publisher: book.publisher,
+                    });
                 }
             }
 
@@ -95,15 +100,16 @@ class Handler {
         }
 
         if (finished) {
-            const data = [];
-            let _finished = null;
-
-            if (finished == 1) _finished = true;
-            else _finished = false;
+            let isFinished = false;
+            if (finished == 1) isFinished = true;
 
             for (const book of books) {
-                if (book.finished === _finished) {
-                    data.unshift(book);
+                if (book.finished === isFinished) {
+                    data.unshift({
+                        id: book.id,
+                        name: book.name,
+                        publisher: book.publisher,
+                    });
                 }
             }
 
@@ -118,7 +124,15 @@ class Handler {
             });
         }
 
-        return {status: 'success', data: {books}};
+        for (const book of books) {
+            data.unshift({
+                id: book.id,
+                name: book.name,
+                publisher: book.publisher,
+            });
+        }
+
+        return {status: 'success', data: {books: data}};
     }
 
     // Get Book by ID
