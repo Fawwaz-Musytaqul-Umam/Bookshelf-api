@@ -4,7 +4,8 @@
 	"description": "",
 	"main": "./src/api/server.js",
 	"scripts": {
-		"start": "nodemon ./src/api/server.js"
+		"start": "nodemon ./src/api/server.js",
+		"lint": "eslint ./src"
 	},
 	"repository": {
 		"type": "git",

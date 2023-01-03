@@ -6,16 +6,6 @@ class Handler {
     static addBook(request, h) {
         const payload = request.payload;
 
-        const id = nanoid(15);
-        const finished = payload.readPage === payload.pageCount;
-        const insertedAt = new Date().toISOString();
-        const updatedAt = insertedAt;
-
-        const newBook = {id, finished, insertedAt, updatedAt, ...payload};
-        books.unshift(newBook);
-
-        const isSuccess = books.filter((book) => book.id === id).length > 0;
-
         if (!payload.name) {
             return response(h, {
                 status: 'fail',
@@ -31,6 +21,16 @@ class Handler {
                 statusCode: 400,
             });
         }
+
+        const id = nanoid(15);
+        const finished = payload.readPage === payload.pageCount;
+        const insertedAt = new Date().toISOString();
+        const updatedAt = insertedAt;
+
+        const newBook = {id, finished, insertedAt, updatedAt, ...payload};
+        books.unshift(newBook);
+
+        const isSuccess = books.filter((book) => book.id === id).length > 0;
 
         if (isSuccess) {
             return response(h, {
